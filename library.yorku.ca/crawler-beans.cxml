@@ -67,12 +67,12 @@ http://library.yorku.ca
        <property name="jobName" value="[see override above]"/>
        <property name="description" value="[see override above]"/>
        <property name="robotsPolicyName" value="obey"/>
-  <!-- <property name="operator" value=""/> -->
-  <!-- <property name="operatorFrom" value=""/> -->
-  <!-- <property name="organization" value=""/> -->
-  <!-- <property name="audience" value=""/> -->
-  <!-- <property name="userAgentTemplate" 
-         value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/> -->
+       <property name="operator" value="Nick Ruest"/>
+       <property name="operatorFrom" value="ruestn@yorku.ca"/>
+       <property name="organization" value="York University Libraries"/>
+       <property name="audience" value="Public"/>
+       <property name="userAgentTemplate" 
+         value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/>
        
  </bean>
  
@@ -163,7 +163,7 @@ http://library.yorku.ca
      <!-- <property name="listLogicalOr" value="true" /> -->
           <property name="regexList">
             <list>
-              <value>find/.*</value>
+              <value>.*/find/.*</value>
             </list>
           </property>
     </bean>
