@@ -336,7 +336,6 @@ http://calendars.registrar.yorku.ca
  <bean id="warcWriter" class="org.archive.modules.writer.WARCWriterProcessor">
   <property name="compress" value="true" />
   <property name="prefix" value="YORK-ACADEMIC-CALENDARS" />
-  <property name="suffix" value="${HOSTNAME}" />
   <property name="maxFileSizeBytes" value="1000000000" />
   <property name="poolMaxActive" value="1" />
   <property name="MaxWaitForIdleMs" value="500" />
