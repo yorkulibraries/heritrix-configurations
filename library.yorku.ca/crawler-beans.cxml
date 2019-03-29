@@ -37,9 +37,9 @@
 # This Properties map is specified in the Java 'property list' text format
 # http://java.sun.com/javase/6/docs/api/java/util/Properties.html#load%28java.io.Reader%29
 
-metadata.operatorContactUrl=http://tau.library.yorku.ca
-metadata.jobName=basic
-metadata.description=Basic crawl starting with useful defaults
+metadata.operatorContactUrl=https://library.yorku.ca
+metadata.jobName=Library website
+metadata.description=Monthly crawl of library website.
 
 ##..more?..##
    </value>
@@ -52,10 +52,9 @@ metadata.description=Basic crawl starting with useful defaults
   <property name="properties">
    <props>
     <prop key="seeds.textSource.value">
-
 # URLS HERE
 http://library.yorku.ca
-
+https://www.library.yorku.ca/web/
     </prop>
    </props>
   </property>
@@ -115,12 +114,18 @@ http://library.yorku.ca
   <!-- <property name="alsoCheckVia" value="false" /> -->
   <!-- <property name="surtsSourceFile" value="" /> -->
   <!-- <property name="surtsDumpFile" value="${launchId}/surts.dump" /> -->
-       <property name="surtsSource">
+   <property name="surtsSource">
         <bean class="org.archive.spring.ConfigString">
          <property name="value">
-           <value>
-             +http://library.yorku.ca/
-             +http://(ca,yorku,library,)
+          <value>
+            +http://library.yorku.ca/
+            +http://(ca,yorku,library,)
+            +https://www.library.yorku.ca/web/
+            +https://(ca,yorku,library,www,)/web/
+            +https://yorku.ca/
+            +https://(ca,yorku,)
+            +https://www.yorku.ca
+            +https://(ca,yorku,www)
           </value>
          </property> 
         </bean>
@@ -143,8 +148,8 @@ http://library.yorku.ca
     </bean>
     <!-- ...but ACCEPT those more than a configured link-hop-count from start... -->
     <bean class="org.archive.modules.deciderules.TransclusionDecideRule">
-     <!-- <property name="maxTransHops" value="2" /> -->
-     <!-- <property name="maxSpeculativeHops" value="1" /> -->
+     <property name="maxTransHops" value="2" />
+     <property name="maxSpeculativeHops" value="1" />
     </bean>
     <!-- ...but REJECT those from a configurable (initially empty) set of REJECT SURTs... -->
     <bean class="org.archive.modules.deciderules.surt.SurtPrefixedDecideRule">
@@ -161,10 +166,10 @@ http://library.yorku.ca
     <bean class="org.archive.modules.deciderules.MatchesListRegexDecideRule">
           <property name="decision" value="REJECT"/>
      <!-- <property name="listLogicalOr" value="true" /> -->
-          <property name="regexList">
-            <list>
-              <value>.*/find/.*</value>
-            </list>
+           <property name="regexList">
+             <list>
+               <value>.*/find/.*</value>
+             </list>
           </property>
     </bean>
     <!-- ...and REJECT those with suspicious repeating path-segments... -->
@@ -289,12 +294,12 @@ http://library.yorku.ca
  <bean id="extractorHttp" class="org.archive.modules.extractor.ExtractorHTTP">
  </bean>
  <bean id="extractorHtml" class="org.archive.modules.extractor.ExtractorHTML">
-  <!-- <property name="extractJavascript" value="true" /> -->
-  <!-- <property name="extractValueAttributes" value="true" /> -->
-  <!-- <property name="ignoreFormActionUrls" value="false" /> -->
-  <!-- <property name="extractOnlyFormGets" value="true" /> -->
-  <!-- <property name="treatFramesAsEmbedLinks" value="true" /> -->
-  <!-- <property name="ignoreUnexpectedHtml" value="true" /> -->
+  <property name="extractJavascript" value="true" />
+  <property name="extractValueAttributes" value="true" />
+  <property name="ignoreFormActionUrls" value="false" />
+  <property name="extractOnlyFormGets" value="true" />
+  <property name="treatFramesAsEmbedLinks" value="true" />
+  <property name="ignoreUnexpectedHtml" value="true" />
   <!-- <property name="maxElementLength" value="1024" /> -->
   <!-- <property name="maxAttributeNameLength" value="1024" /> -->
   <!-- <property name="maxAttributeValueLength" value="16384" /> -->
@@ -335,26 +340,26 @@ http://library.yorku.ca
  <!-- DISPOSITION CHAIN -->
  <!-- first, processors are declared as top-level named beans  -->
  <bean id="warcWriter" class="org.archive.modules.writer.WARCWriterProcessor">
-  <!-- <property name="compress" value="true" /> -->
-  <!-- <property name="prefix" value="IAH" /> -->
-  <!-- <property name="suffix" value="${HOSTNAME}" /> -->
-  <!-- <property name="maxFileSizeBytes" value="1000000000" /> -->
-  <!-- <property name="poolMaxActive" value="1" /> -->
-  <!-- <property name="MaxWaitForIdleMs" value="500" /> -->
-  <!-- <property name="skipIdenticalDigests" value="false" /> -->
-  <!-- <property name="maxTotalBytesToWrite" value="0" /> -->
-  <!-- <property name="directory" value="${launchId}" /> -->
-  <!-- <property name="storePaths">
-        <list>
-         <value>warcs</value>
-        </list>
-       </property> -->
-  <!-- <property name="template" value="${prefix}-${timestamp17}-${serialno}-${heritrix.pid}~${heritrix.hostname}~${heritrix.port}" /> -->
-  <!-- <property name="writeRequests" value="true" /> -->
-  <!-- <property name="writeMetadata" value="true" /> -->
-  <!-- <property name="writeRevisitForIdenticalDigests" value="true" /> -->
-  <!-- <property name="writeRevisitForNotModified" value="true" /> -->
-  <!-- <property name="startNewFilesOnCheckpoint" value="true" /> -->
+  <property name="compress" value="true" />
+  <property name="prefix" value="YORK-LIBRARIES" />
+  <property name="suffix" value="${HOSTNAME}" />
+  <property name="maxFileSizeBytes" value="1000000000" />
+  <property name="poolMaxActive" value="1" />
+  <property name="MaxWaitForIdleMs" value="500" />
+  <property name="skipIdenticalDigests" value="false" />
+  <property name="maxTotalBytesToWrite" value="0" />
+  <property name="directory" value="${launchId}" />
+  <property name="storePaths">
+    <list>
+      <value>warcs</value>
+    </list>
+  </property>
+  <property name="template" value="${prefix}-${timestamp17}-${serialno}-${heritrix.pid}~${heritrix.hostname}~${heritrix.port}" />
+  <property name="writeRequests" value="true" />
+  <property name="writeMetadata" value="true" />
+  <property name="writeRevisitForIdenticalDigests" value="true" />
+  <property name="writeRevisitForNotModified" value="true" />
+  <property name="startNewFilesOnCheckpoint" value="true" />
  </bean>
  <bean id="candidates" class="org.archive.crawler.postprocessor.CandidatesProcessor">
   <!-- <property name="seedsRedirectNewSeeds" value="true" /> -->
@@ -628,7 +633,10 @@ http://library.yorku.ca
         <list>
          <bean id="crawlSummaryReport" class="org.archive.crawler.reporting.CrawlSummaryReport" />
          <bean id="seedsReport" class="org.archive.crawler.reporting.SeedsReport" />
-         <bean id="hostsReport" class="org.archive.crawler.reporting.HostsReport" />
+         <bean id="hostsReport" class="org.archive.crawler.reporting.HostsReport">
+     		<property name="maxSortSize" value="-1" />
+     		<property name="suppressEmptyHosts" value="false" />
+         </bean>
          <bean id="sourceTagsReport" class="org.archive.crawler.reporting.SourceTagsReport" />
          <bean id="mimetypesReport" class="org.archive.crawler.reporting.MimetypesReport" />
          <bean id="responseCodeReport" class="org.archive.crawler.reporting.ResponseCodeReport" />
@@ -677,12 +685,12 @@ http://library.yorku.ca
   <!-- <property name="expectedConcurrency" value="25" /> -->
  </bean>
  
- <!-- BDBCOOKIESTORAGE: disk-based cookie storage for FetchHTTP -->
- <bean id="cookieStorage" 
-   class="org.archive.modules.fetcher.BdbCookieStorage">
+ <!-- BDBCOOKIESTORE: disk-based cookie storage for FetchHTTP -->
+ <bean id="cookieStore" 
+  class="org.archive.modules.fetcher.BdbCookieStore">
   <!-- <property name="cookiesLoadFile"><null/></property> -->
   <!-- <property name="cookiesSaveFile"><null/></property> -->
-  <!-- <property name="bdb">
+  <!-- <property name="bdbModule">
         <ref bean="bdb"/>
        </property> -->
  </bean>
