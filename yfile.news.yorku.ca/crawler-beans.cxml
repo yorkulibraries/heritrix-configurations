@@ -46,6 +46,17 @@ metadata.description=Common records schedule crawl of YFile.
   </property>
  </bean>
 
+   <!-- optional, will use the main bdb module if omitted, just like old dedup -->
+  <bean id="historyBdb" class="org.archive.bdb.BdbModule" autowire-candidate="false">
+   <property name="dir" value="history" />
+  </bean>
+
+  <bean id="contentDigestHistory" class="org.archive.modules.recrawl.BdbContentDigestHistory">
+   <property name="bdbModule">
+    <ref bean="historyBdb" />
+   </property>
+ </bean>
+
  <!-- overrides from declared <prop> elements, more easily allowing
       multiline values or even declared beans -->
  <bean id="longerOverrides" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
@@ -243,8 +254,8 @@ http://yfile.news.yorku.ca
  </bean>
  <bean id="fetchDns" class="org.archive.modules.fetcher.FetchDNS">
   <!-- <property name="acceptNonDnsResolves" value="false" /> -->
-  <!-- <property name="digestContent" value="true" /> -->
-  <!-- <property name="digestAlgorithm" value="sha1" /> -->
+  <property name="digestContent" value="true" />
+  <property name="digestAlgorithm" value="sha256" />
  </bean>
  <!-- <bean id="fetchWhois" class="org.archive.modules.fetcher.FetchWhois">
        <property name="specialQueryTemplates">
@@ -372,9 +383,11 @@ http://yfile.news.yorku.ca
  <!-- now, processors are assembled into ordered DispositionChain bean -->
  <bean id="dispositionProcessors" class="org.archive.modules.DispositionChain">
   <property name="processors">
-   <list>
+    <list>
+      <bean class="org.archive.modules.recrawl.ContentDigestHistoryLoader" />
     <!-- write to aggregate archival files... -->
     <ref bean="warcWriter"/>
+    <bean class="org.archive.modules.recrawl.ContentDigestHistoryStorer" />
     <!-- ...send each outlink candidate URI to CandidateChain, 
          and enqueue those ACCEPTed to the frontier... -->
     <ref bean="candidates"/>

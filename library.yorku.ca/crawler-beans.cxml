@@ -248,8 +248,8 @@ https://www.library.yorku.ca/web/
  </bean>
  <bean id="fetchDns" class="org.archive.modules.fetcher.FetchDNS">
   <!-- <property name="acceptNonDnsResolves" value="false" /> -->
-  <!-- <property name="digestContent" value="true" /> -->
-  <!-- <property name="digestAlgorithm" value="sha1" /> -->
+  <property name="digestContent" value="true" />
+  <property name="digestAlgorithm" value="sha256" />
  </bean>
  <!-- <bean id="fetchWhois" class="org.archive.modules.fetcher.FetchWhois">
        <property name="specialQueryTemplates">
@@ -379,7 +379,9 @@ https://www.library.yorku.ca/web/
   <property name="processors">
    <list>
     <!-- write to aggregate archival files... -->
+    <bean class="org.archive.modules.recrawl.ContentDigestHistoryLoader" />
     <ref bean="warcWriter"/>
+    <bean class="org.archive.modules.recrawl.ContentDigestHistoryStorer" />
     <!-- ...send each outlink candidate URI to CandidateChain, 
          and enqueue those ACCEPTed to the frontier... -->
     <ref bean="candidates"/>
